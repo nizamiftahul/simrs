@@ -41,3 +41,6 @@ out/
 
 ### Rtk ###
 .rtk/
+
+### Local secrets ###
+application-local.properties
