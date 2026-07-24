@@ -95,4 +95,15 @@ class AuthControllerTest {
         mockMvc.perform(post("/api/auth/nonexistent-but-not-permitted"))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void login_withEmptyBody_returnsFieldErrors() throws Exception {
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors", org.hamcrest.Matchers.hasSize(2)))
+                .andExpect(jsonPath("$.errors[?(@.field == 'username')].message").value("must not be blank"))
+                .andExpect(jsonPath("$.errors[?(@.field == 'password')].message").value("must not be blank"));
+    }
 }
